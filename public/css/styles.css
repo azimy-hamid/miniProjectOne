@@ -1,0 +1,64 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+}
+nav {
+  background: linear-gradient(to left, #7a60ff, #cd9ffa) !important;
+}
+
+.logo {
+  color: #7a60ff;
+}
+
+.hero-section {
+  position: relative;
+  background: linear-gradient(to left, #7a60ff, #cd9ffa) !important;
+  color: #fff;
+}
+
+.cta-hero {
+  background-color: #fff;
+  color: #cd9ffa;
+  /* width: auto; */
+}
+
+.cta-hero:hover {
+  /* background: transparent; */
+  background-color: #cd9ffa;
+  /* outline: 2px solid #7a60ff; */
+  color: #fff;
+}
+
+.hero-curve {
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+  transform: rotate(180deg);
+}
+
+.hero-curve svg {
+  position: relative;
+  display: block;
+  width: calc(100% + 1.3px);
+  height: 81px;
+}
+
+.hero-curve .shape-fill {
+  fill: #fff;
+}
+
+/** For mobile devices **/
+@media (max-width: 767px) {
+  .hero-curve svg {
+    width: calc(100% + 1.3px);
+    height: 30px;
+  }
+}

@@ -1,0 +1,64 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  position: relative;
+}
+
+.chart-btn {
+  background-color: #7a60ff;
+  color: #fff;
+  text-decoration: none;
+}
+
+.section-transfer-deposit-forms {
+  position: relative;
+  background: linear-gradient(to left, #7a60ff, #cd9ffa) !important;
+  color: #fff;
+}
+
+.form-btn {
+  background-color: #fff;
+  color: #cd9ffa;
+  /* width: auto; */
+}
+
+.form-btn:hover {
+  /* background: transparent; */
+  background-color: #cd9ffa;
+  /* outline: 2px solid #7a60ff; */
+  color: #fff;
+}
+
+/* CURVE SHAPE CSS */
+.transfer-deposit-curve {
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+  transform: rotate(180deg);
+}
+
+.transfer-deposit-curve svg {
+  position: relative;
+  display: block;
+  width: calc(100% + 1.3px);
+  height: 81px;
+}
+
+.transfer-deposit-curve .shape-fill {
+  fill: #fff;
+}
+
+/** For mobile devices **/
+@media (max-width: 767px) {
+  .transfer-deposit-curve svg {
+    width: calc(100% + 1.3px);
+    height: 30px;
+  }
+}
