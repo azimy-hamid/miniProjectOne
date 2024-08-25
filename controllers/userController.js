@@ -11,15 +11,15 @@ exports.createUser = async (req, res) => {
     const { name, email, password } = req.body;
 
     if (!name || !email || !password) {
-      res.status(400).json("All fields must be filled");
+      return res.status(400).json("All fields must be filled");
     }
 
     if (!validator.isEmail(email)) {
-      res.status(400).json("Email not valid");
+      return res.status(400).json("Email not valid");
     }
 
     if (!validator.isStrongPassword(password)) {
-      res.status(400).json("Password not strong enough!");
+      return res.status(400).json("Password not strong enough!");
     }
 
     if (
@@ -39,10 +39,10 @@ exports.createUser = async (req, res) => {
       req.session.authorized = true;
       res.cookie("userId", user._id.toString(), { httpOnly: false });
 
-      return res.redirect("/dashboard");
+      return res.status(200).json({ message: "Success - User Created" });
     }
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: err.message });
   }
 };
 
@@ -52,12 +52,14 @@ exports.loginUser = async (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      res.status(400).json("All fields must be filled");
+      return res.status(400).json({ error: "All fields must be filled" });
     }
 
-    if (email && password && validator.isEmail(email)) {
+    if (validator.isEmail(email)) {
       const user = await User.findOne({ email });
-      if (!user) return res.status(404).json({ error: "User not found" });
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
 
       const isMatch = await bcrypt.compare(password, user.passwordHash);
       if (isMatch) {
@@ -65,13 +67,15 @@ exports.loginUser = async (req, res) => {
         req.session.authorized = true;
         res.cookie("userId", user._id.toString(), { httpOnly: false });
 
-        return res.redirect("/dashboard");
+        return res.status(200).json({ message: "Login successful" });
       } else {
-        return res.redirect("/login.ejs");
+        return res.status(401).json({ error: "Incorrect password" });
       }
+    } else {
+      return res.status(400).json({ error: "Invalid email format" });
     }
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: err.message });
   }
 };
 

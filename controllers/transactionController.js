@@ -7,6 +7,11 @@ exports.createTransaction = async (req, res) => {
   const { user_id, account_id, type, amount, description, reciever } = req.body;
 
   try {
+    const user = await User.findOne({ _id: user_id });
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
     const senderAccount = await Account.findById(account_id);
     if (!senderAccount) {
       return res.status(404).json({ error: "Sender account not found" });
@@ -50,7 +55,7 @@ exports.createTransaction = async (req, res) => {
 
     await transaction.save();
 
-    return res.redirect("/dashboard");
+    return res.status(200).json({ message: "Transaction Complete" });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

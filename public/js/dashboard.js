@@ -8,7 +8,8 @@ userInputs.forEach(function (input) {
   input.value = userIdString;
 });
 
-// POPULATE ACCOUNT'S TABLE
+// POPULATE ACCOUNT'S TABLE AND ADD ALL THE ACCOUNT FOR THE USE IN THE FORM DROPDOWNS AND ALSO ADD THE DATA FOR THE CHARTS
+
 document.addEventListener("DOMContentLoaded", async function () {
   try {
     const response = await fetch(`/api/accounts/${userIdString}`); // Adjust the path to match your route
@@ -38,18 +39,29 @@ document.addEventListener("DOMContentLoaded", async function () {
       accountTableBody.appendChild(row);
     });
 
-    const accountSelects = document.querySelectorAll(".accountSelect");
+    // modify
+    const depositAccountSelect = document.getElementById(
+      "deposit-account-select"
+    );
+    console.log(depositAccountSelect);
+
+    const transferAccountSelect = document.getElementById(
+      "transfer-account-select"
+    );
 
     // Populate all select elements
     accounts.forEach((account) => {
-      const option = document.createElement("option");
-      option.value = account._id;
-      option.textContent = `${account.account_number} - ${account.account_type}`;
+      const depositOption = document.createElement("option");
+      depositOption.value = account._id;
+      depositOption.textContent = `${account.account_number} - ${account.account_type}`;
 
-      // Append the option to all select elements
-      accountSelects.forEach((select) => {
-        select.appendChild(option.cloneNode(true));
-      });
+      const transferOption = document.createElement("option");
+      transferOption.value = account._id;
+      transferOption.textContent = `${account.account_number} - ${account.account_type}`;
+
+      // Append the options to their respective select elements
+      depositAccountSelect.appendChild(depositOption);
+      transferAccountSelect.appendChild(transferOption);
     });
 
     let balances = accounts.map((account) => {
@@ -125,7 +137,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
       allTransactionTableBody.appendChild(row);
     });
-    
+
     let depositCounter = 0;
     let transferCounter = 0;
 
@@ -173,7 +185,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     const allAccounts = await response.json();
 
-    const recieverSelect = document.getElementById("recieverSelect");
+    const recieverSelect = document.getElementById("transfer-reciever-select");
 
     // Populate all select elements
     allAccounts.forEach((account) => {
@@ -188,4 +200,163 @@ document.addEventListener("DOMContentLoaded", async function () {
   } catch (error) {
     console.error("Error:", error);
   }
+});
+
+// Validating the transfer form
+document.addEventListener("DOMContentLoaded", () => {
+  // ALL ELEMENTS FOR THE TRANSFER FORM
+  const transferForm = document.getElementById("transfer-form");
+  const transferUserIdInput = document.getElementById("transfer-user-id-input");
+  const transferAccountSelect = document.getElementById(
+    "transfer-account-select"
+  );
+  const transferRecieverSelect = document.getElementById(
+    "transfer-reciever-select"
+  );
+  const transferTypeInput = document.getElementById("transfer-type-input");
+  const transferAmountInput = document.getElementById("transfer-amount-input");
+  const transferDescriptionInput = document.getElementById(
+    "transfer-description-input"
+  );
+  const transferSubmitBtn = document.getElementById("transfer-submit-btn");
+
+  //   ERROR CONTAINER TO DISPLAY THE ERROR MSG IF ANY OCCURS
+  const transferErrorContainer = document.createElement("div");
+
+  // Append the error container to the form
+  transferForm.insertBefore(transferErrorContainer, transferForm.firstChild);
+  // Style the error container
+  transferErrorContainer.style.color = "red";
+  transferErrorContainer.style.marginBottom = "1rem";
+
+  function displayError(message) {
+    transferErrorContainer.innerHTML = `<p>${message}</p>`;
+  }
+
+  transferForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    // Clear previous errors
+    transferErrorContainer.innerHTML = "";
+
+    const userId = transferUserIdInput.value;
+    const accountId = transferAccountSelect.value;
+    const reciever = transferRecieverSelect.value;
+    const type = transferTypeInput.value;
+    const amount = transferAmountInput.value;
+    const description = transferDescriptionInput.value;
+
+    // Basic client-side validation
+    if (
+      !userId ||
+      !accountId ||
+      !reciever ||
+      !type ||
+      !amount ||
+      !description
+    ) {
+      displayError("All fields must be filled");
+      return;
+    }
+
+    try {
+      const response = await fetch("api/transactions/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId,
+          accountId,
+          reciever,
+          type,
+          amount,
+          description,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        window.location.href = "/dashboard";
+      } else {
+        displayError(result.error);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      displayError("Something went wrong. Please try again.");
+    }
+  });
+});
+
+// DEPOSIT FORM VALIDATION
+document.addEventListener("DOMContentLoaded", () => {
+  // ALL ELEMENTS FOR THE DEPOSIT FORM
+  const depositForm = document.getElementById("deposit-form");
+  const depositUserIdInput = document.getElementById("deposit-user-id-input");
+  const depositAccountSelect = document.getElementById(
+    "deposit-account-select"
+  );
+  const depositTypeInput = document.getElementById("deposit-type-input");
+  const depositAmountInput = document.getElementById("deposit-amount-input");
+  const depositDescriptionInput = document.getElementById(
+    "deposit-description-input"
+  );
+  const depositSubmitBtn = document.getElementById("deposit-submit-btn");
+
+  const depositErrorContainer = document.createElement("div");
+  depositForm.insertBefore(depositErrorContainer, depositForm.firstChild);
+
+  depositErrorContainer.style.color = "red";
+  depositErrorContainer.style.marginBottom = "1rem";
+
+  function displayError(message) {
+    depositErrorContainer.innerHTML = `<p>${message}</p>`;
+  }
+
+  depositForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    // Clear previous errors
+    depositErrorContainer.innerHTML = "";
+
+    const userId = depositUserIdInput.value;
+    const accountId = depositAccountSelect.value;
+    const type = depositTypeInput.value;
+    const amount = depositAmountInput.value;
+    const description = depositDescriptionInput.value;
+
+    // Basic client-side validation
+    if (!userId || !accountId || !type || !amount || !description) {
+      displayError("All fields must be filled");
+      return;
+    }
+
+    try {
+      const response = await fetch("api/transactions/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId,
+          accountId,
+          type,
+          amount,
+          description,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        window.location.href = "/dashboard";
+      } else {
+        displayError(result.error);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      displayError("Something went wrong. Please try again.");
+    }
+  });
 });

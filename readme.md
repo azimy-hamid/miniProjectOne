@@ -8,10 +8,9 @@ It also contains a web page that gets its data from an external api [this api in
 ## Table of Contents
 
 - [Installation](#installation)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
-- [Acknowledgments](#acknowledgments)
+- [Usage/Live on the web](#Usage/Live-on-the-web)
+- [Running Locally](#Running-Locally)
+- [Project Questions](#Project-Questions)
 
 ## Installation
 
@@ -24,7 +23,7 @@ It also contains a web page that gets its data from an external api [this api in
 4. Create a `.env` file in the root directory and add the necessary environment variables.
 
 - PORT = 4000
-- MONGO_URI = your mongodb atlas URI (it should contain the username and the password both) you can get this link from mongodb atlas when you create an account. It should look something like this: mongodb+srv://<username>:<password>@cluster0.mufmax4.mongodb.net/miniProjectOne?retryWrites=true&w=majority&appName=Cluster0
+- MONGO_URI = your mongodb atlas URI (it should contain the username and the password both) you can get this link from mongodb atlas when you create an account. It should look something like this: mongodb+srv://username:password@cluster0.mufmax4.mongodb.net/miniProjectOne?retryWrites=true&w=majority&appName=Cluster0
 - JWT_SECRET = You can use a password generator to create a password and use it as your JWT Token
 - SESSION_SECRET = The same goes here, use a password generator and use it as your session secret
 
