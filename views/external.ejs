@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include("./partials/generalHeader.ejs") %>
+    <link rel="stylesheet" href="css/external.css" />
+  </head>
+  <body>
+    <%- include("./partials/dashboardNavbar.ejs") %>
+
+    <section class="graphs-section">
+      <div class="container">
+        <div class="row">
+          <div class="first-graph col-sm-12 col-md-6">
+            <canvas id="first-graph-canvas"></canvas>
+          </div>
+
+          <div class="second-graph col-sm-12 col-md-6">
+            <canvas id="second-graph-canvas"></canvas>
+          </div>
+
+          <div class="third-graph col-sm-12 col-md-12 h-30">
+            <canvas id="third-graph-canvas"></canvas>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="all-transactions-table mb-5">
+      <h4 class="text-center fw-bold mb-5 mx-1 mx-md-4 mt-4">Transactions</h4>
+      <div class="container all-transactions-table-container overflow-scroll">
+        <table class="table table-responsive">
+          <thead>
+            <tr>
+              <th scope="col">Id</th>
+              <th scope="col">Category</th>
+              <th scope="col">Credit</th>
+              <th scope="col">debit</th>
+              <th scope="col">Description</th>
+              <th scope="col">Transaction Date</th>
+            </tr>
+          </thead>
+          <tbody
+            id="transaction-table-Body"
+            class="table-group-divider table-divider-color"
+          ></tbody>
+        </table>
+      </div>
+    </section>
+
+    <button
+      class="sorting-filtering-offcanvas-btn p-2 text-white w-100 fixed-bottom"
+      type="button"
+      data-bs-toggle="offcanvas"
+      data-bs-target="#sortOffcanvas"
+      aria-controls="offcanvasExample"
+    >
+      Sort/Filter
+    </button>
+
+    <div
+      class="offcanvas offcanvas-bottom h-auto"
+      tabindex="-1"
+      id="sortOffcanvas"
+      aria-labelledby="offcanvasExampleLabel"
+    >
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasExampleLabel">
+          Sort and Filter
+        </h5>
+        <button
+          type="button"
+          class="btn-close text-reset"
+          data-bs-dismiss="offcanvas"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="offcanvas-body">
+        <section class="sorting-btns mb-2">
+          <div class="container d-flex flex-column gap-2">
+            <h6>Sort By Column</h6>
+            <select name="" id="columns-dropdown" class="form-control">
+              <option value="">Choose which column to sort</option>
+            </select>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="flexRadioDefault"
+                id="ascending"
+                checked
+              />
+              <label class="form-check-label" for="flexRadioDefault1">
+                Ascending
+              </label>
+            </div>
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="flexRadioDefault"
+                id="descending"
+              />
+              <label class="form-check-label" for="flexRadioDefault2">
+                Descending
+              </label>
+            </div>
+            <button type="button" class="btn btn-dark" id="sort-btn">
+              Sort
+            </button>
+          </div>
+        </section>
+
+        <section class="filtering-section">
+          <div
+            class="container d-flex flex-column gap-2"
+            id="filtering-container"
+          >
+            <h6>Filter By Column</h6>
+
+            <select name="" id="filter-dropdown" class="form-control">
+              <option value="">Filter by ...</option>
+              <option value="credit">Credit</option>
+              <option value="debit">Debit</option>
+              <option value="date">Transaction Date</option>
+            </select>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <%- include("./partials/generalFooter.ejs") %>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/external.js"></script>
+  </body>
+</html>

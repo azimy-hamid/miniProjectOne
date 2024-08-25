@@ -51,6 +51,39 @@ document.addEventListener("DOMContentLoaded", async function () {
         select.appendChild(option.cloneNode(true));
       });
     });
+
+    let balances = accounts.map((account) => {
+      return account.balance;
+    });
+    console.log(balances);
+
+    let accountNumbers = accounts.map((account) => {
+      return account.account_number;
+    });
+
+    const accountsChart = document.getElementById("accountsChart");
+
+    new Chart(accountsChart, {
+      type: "line",
+      data: {
+        labels: accountNumbers,
+        datasets: [
+          {
+            label: "Balance",
+            data: balances,
+            backgroundColor: ["#7a60ff", "#cd9ffa"],
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        plugins: {
+          legend: {
+            display: false, // Disable the legend
+          },
+        },
+      },
+    });
   } catch (error) {
     console.error("Error:", error);
   }
@@ -71,6 +104,8 @@ document.addEventListener("DOMContentLoaded", async function () {
       "transaction-table-Body"
     );
 
+    console.log(allTransaction);
+
     // Clear existing rows
     allTransactionTableBody.innerHTML = "";
 
@@ -89,35 +124,40 @@ document.addEventListener("DOMContentLoaded", async function () {
         `;
 
       allTransactionTableBody.appendChild(row);
+    });
+    
+    let depositCounter = 0;
+    let transferCounter = 0;
 
-      let depositCounter = 0;
-      let transferCounter = 0;
+    allTransaction.forEach((transaction) => {
+      if (transaction.type.toLowerCase() === "deposit") {
+        depositCounter++;
+      } else if (transaction.type.toLowerCase() === "transfer") {
+        transferCounter++;
+      }
+    });
 
-      allTransaction.forEach((transaction) => {
-        if (transaction.type.toLowerCase() === "deposit") {
-          depositCounter++;
-        } else if (transaction.type.toLowerCase() === "transfer") {
-          transferCounter++;
-        }
-      });
+    const ctx = document.getElementById("myChart");
 
-      const ctx = document.getElementById("myChart");
-
-      new Chart(ctx, {
-        type: "bar",
-        data: {
-          labels: ["Deposits", "Transfers"],
-          datasets: [
-            {
-              label: "Number of Deposits",
-              data: [depositCounter, transferCounter],
-              backgroundColor: ["#7a60ff", "#cd9ffa"],
-              borderWidth: 1,
-            },
-          ],
+    new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: ["Deposits", "Transfers"],
+        datasets: [
+          {
+            data: [depositCounter, transferCounter],
+            backgroundColor: ["#7a60ff", "#cd9ffa"],
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        plugins: {
+          legend: {
+            display: false, // Disable the legend
+          },
         },
-        options: {},
-      });
+      },
     });
   } catch (error) {
     console.error("Error:", error);
@@ -125,26 +165,27 @@ document.addEventListener("DOMContentLoaded", async function () {
 });
 
 document.addEventListener("DOMContentLoaded", async function () {
-  const response = await fetch("/api/accounts/details/allAccounts");
-  if (!response.ok) {
-    throw new Error("Failed to fetch account IDs");
-  }
-
-  const allAccounts = await response.json();
-
-  const recieverSelects = document.querySelectorAll(".recieverSelect");
-
-  console.log(allAccounts);
-  // Populate all select elements
-  allAccounts.map((acc) => {
-    if (acc.user_id !== userIdString) {
-      const option = document.createElement("option");
-      option.value = acc._id;
-      option.textContent = `${acc.account_number}`;
-
-      recieverSelects.forEach((select) => {
-        select.appendChild(option.cloneNode(true));
-      });
+  try {
+    const response = await fetch(`/api/accounts/details/allAccounts`); // Adjust the path to match your route
+    if (!response.ok) {
+      throw new Error("Failed to fetch account IDs");
     }
-  });
+
+    const allAccounts = await response.json();
+
+    const recieverSelect = document.getElementById("recieverSelect");
+
+    // Populate all select elements
+    allAccounts.forEach((account) => {
+      if (account.user_id !== userIdString) {
+        const option = document.createElement("option");
+        option.value = account._id;
+        option.textContent = account.account_number;
+
+        recieverSelect.appendChild(option);
+      }
+    });
+  } catch (error) {
+    console.error("Error:", error);
+  }
 });

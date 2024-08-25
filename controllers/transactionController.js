@@ -50,7 +50,7 @@ exports.createTransaction = async (req, res) => {
 
     await transaction.save();
 
-    res.status(201).json(transaction);
+    return res.redirect("/dashboard");
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

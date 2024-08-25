@@ -52,7 +52,15 @@ app.get("/login.ejs", async (req, res) => {
 });
 
 app.get("/dashboard", authMiddleware, async (req, res) => {
-  res.render("dashboard.ejs", { title: "Dashboard - Purple Horizon Financial" });
+  res.render("dashboard.ejs", {
+    title: "Dashboard - Purple Horizon Financial",
+  });
+});
+
+app.get("/external", authMiddleware, async (req, res) => {
+  res.render("external.ejs", {
+    title: "External API Example - Purple Horizon Financial",
+  });
 });
 
 app.get("/logout.ejs", async (req, res) => {

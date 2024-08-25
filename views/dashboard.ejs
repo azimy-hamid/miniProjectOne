@@ -5,64 +5,7 @@
     <link rel="stylesheet" href="css/dashboard.css" />
   </head>
   <body>
-    <nav class="navbar navbar-expand-md navbar-light">
-      <div class="container-xxl navbar-conatiner">
-        <a class="navbar-brand" href="/">
-          <span class="fw-bold text-white"
-            ><span class="logo">Purple</span> Horizon Financial</span
-          >
-        </a>
-
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#main-nav"
-          aria-controls="main-nav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div
-          class="collapse navbar-collapse justify-content-end align-items-center"
-          id="main-nav"
-        >
-          <ul class="navbar-nav navbar-links">
-            <li>
-              <a
-                href="#createAccount"
-                class="nav-link text-white d-md-none"
-                data-bs-toggle="offcanvas"
-                role="button"
-                aria-controls="createAccount"
-                >Create an Account <i class="fa-solid fa-circle-up"></i
-              ></a>
-            </li>
-
-            <li>
-              <a
-                href="#createAccount"
-                class="nav-link text-white d-none d-md-inline"
-                data-bs-toggle="offcanvas"
-                role="button"
-                aria-controls="createAccount"
-                >Create an Account <i class="fa-solid fa-circle-up"></i
-              ></a>
-            </li>
-
-            <li class="nav-item ms-2 d-md-none">
-              <a href="logout.ejs" class="nav-link text-white">Logout</a>
-            </li>
-
-            <li class="nav-item ms-2 d-none d-md-inline">
-              <a href="logout.ejs" class="btn text-white">Logout</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+    <%- include("./partials/dashboardNavbar.ejs") %>
 
     <section class="section-transfer-deposit-forms p-3 py-md-5">
       <div
@@ -329,7 +272,7 @@
       aria-labelledby="offcanvasLabel"
     >
       <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasLabel">Transactions</h5>
+        <h5 class="offcanvas-title" id="offcanvasLabel">Visualisation</h5>
         <button
           type="button"
           class="btn-close text-reset"
@@ -338,7 +281,15 @@
         ></button>
       </div>
       <div class="offcanvas-body">
-        <canvas id="myChart"></canvas>
+        <h5>Account Balance</h5>
+        <div class="accounts-chart mb-5">
+          <canvas id="accountsChart"></canvas>
+        </div>
+
+        <h5>Transactions</h5>
+        <div class="transactions-chart">
+          <canvas id="myChart"></canvas>
+        </div>
       </div>
     </div>
 
