@@ -18,7 +18,7 @@ It also contains a web page that gets its data from an external api [this api in
 2. Navigate to the project directory:
 3. Install the dependencies using:
 
-- npm install
+- npm install (This will install all the dependencies)
 
 4. Create a `.env` file in the root directory and add the necessary environment variables.
 
