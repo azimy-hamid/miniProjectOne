@@ -8,7 +8,7 @@ const userRoutes = require("./routes/userRoutes");
 const accountRoutes = require("./routes/accountRoutes");
 const transactionRoutes = require("./routes/transactionRoutes");
 const session = require("express-session");
-const { rmSync } = require("fs");
+const MongoStore = require("connect-mongo");
 
 const authMiddleware = (req, res, next) => {
   if (!req.session.authorized) {
@@ -28,9 +28,13 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use(
   session({
-    secret: process.env.SESSION_SECRET,
+    secret: process.env.SESSION_SECRET, // Secret key for signing the session ID cookie
+    resave: false, // Don't save the session if it hasn't changed
+    saveUninitialized: false, // Don't create a session until something is stored
+    store: MongoStore.create({ mongoUrl: process.env.MONGO_URI }),
     cookie: {
-      sameSite: "strict",
+      secure: false, // Set to true if using HTTPS
+      maxAge: 24 * 60 * 60 * 1000, // 24-hour expiration for the cookie
     },
   })
 );
@@ -63,10 +67,26 @@ app.get("/external", authMiddleware, async (req, res) => {
   });
 });
 
-app.get("/logout.ejs", async (req, res) => {
-  res.clearCookie("userId");
-  req.session.destroy();
-  res.redirect("/login.ejs");
+// app.post("/logout.ejs", async (req, res) => {
+//   req.session.destroy();
+//   res.clearCookie("userId");
+//   res.redirect("/login.ejs");
+// });
+
+app.get("/logout.ejs", (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      console.error("Failed to destroy session:", err);
+      return res.status(500).send("An error occurred while logging out");
+    }
+
+    // Optionally clear the cookie
+    res.clearCookie("connect.sid"); // Clear the session cookie
+    res.clearCookie("userId");
+
+    // Redirect to the login page or homepage
+    res.redirect("/login.ejs");
+  });
 });
 
 mongoose.connect(process.env.MONGO_URI).then(() => {

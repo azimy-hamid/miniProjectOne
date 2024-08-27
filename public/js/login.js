@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
   errorContainer.style.marginBottom = "1rem";
 
   loginForm.addEventListener("submit", async (event) => {
-    event.preventDefault(); 
+    event.preventDefault();
 
     // Clear previous errors
     errorContainer.innerHTML = "";
@@ -45,6 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (response.ok) {
         // Successful login - redirect to the dashboard
         window.location.href = "/dashboard";
+        // console.log(result);
       } else {
         // Display the error message returned by the server
         displayError(result.error);

@@ -63,11 +63,16 @@ exports.loginUser = async (req, res) => {
 
       const isMatch = await bcrypt.compare(password, user.passwordHash);
       if (isMatch) {
+        const userLoggedIn = await User.findOne({ email });
+        if (!userLoggedIn) {
+          return res.status(404).json({ error: "User not found" });
+        }
+
         req.session.user = { userId: user._id };
         req.session.authorized = true;
         res.cookie("userId", user._id.toString(), { httpOnly: false });
 
-        return res.status(200).json({ message: "Login successful" });
+        return res.status(200).json({ message: "Login Successful" });
       } else {
         return res.status(401).json({ error: "Incorrect password" });
       }
