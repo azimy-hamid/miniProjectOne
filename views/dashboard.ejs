@@ -81,8 +81,14 @@
                 placeholder="description"
                 name="description"
                 id="transfer-description-input"
-                
               />
+            </div>
+
+            <div
+              class="alert alert-danger d-none d-flex flex-row align-items-center"
+              id="transfer-error-msg"
+            >
+              <i class="fas fa-circle-exclamation me-3 fa-fw"></i>
             </div>
 
             <!-- Submit button -->
@@ -159,6 +165,13 @@
               />
             </div>
 
+            <div
+              class="alert alert-danger d-none d-flex flex-row align-items-center"
+              id="deposit-error-msg"
+            >
+              <i class="fas fa-circle-exclamation me-3 fa-fw"></i>
+            </div>
+
             <!-- Submit button -->
             <button
               data-mdb-ripple-init
@@ -199,7 +212,9 @@
 
     <section class="all-accounts-table">
       <h4 class="text-center fw-bold mb-5 mx-1 mx-md-4 mt-4">Accounts</h4>
-      <div class="container all-accounts-table-container overflow-scroll">
+      <div
+        class="container all-accounts-table-container overflow-scroll table-height-400"
+      >
         <table class="table table-responsive">
           <thead>
             <tr>
@@ -218,9 +233,11 @@
       </div>
     </section>
 
-    <section class="all-transactions-table">
+    <section class="all-transactions-table pb-5">
       <h4 class="text-center fw-bold mb-5 mx-1 mx-md-4 mt-4">Transactions</h4>
-      <div class="container all-transactions-table-container overflow-scroll">
+      <div
+        class="container all-transactions-table-container overflow-scroll table-height-400"
+      >
         <table class="table table-responsive">
           <thead>
             <tr>
@@ -279,7 +296,7 @@
           <button
             data-mdb-ripple-init
             type="submit"
-            class="btn form-btn btn-block mb-4 w-100"
+            class="btn btn-block mb-4 w-100 create-btn"
           >
             Create Account
           </button>

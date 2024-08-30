@@ -6,20 +6,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const confirmPasswordInput = document.getElementById(
     "confirm-password-input"
   );
-  const errorContainer = document.createElement("div");
 
-  // Append the error container to the form
-  signupForm.insertBefore(errorContainer, signupForm.firstChild);
-
-  // Style the error container
-  errorContainer.style.color = "red";
-  errorContainer.style.marginBottom = "1rem";
+  const errorContainer = document.getElementById("error-msg");
+  const innerDiv = document.createElement("div");
+  innerDiv.classList.add("d-flex", "flex-row", "align-items-center");
 
   signupForm.addEventListener("submit", async (event) => {
     event.preventDefault();
-
-    // Clear previous errors
-    errorContainer.innerHTML = "";
 
     const name = nameInput.value;
     const email = emailInput.value.trim();
@@ -84,6 +77,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function displayError(message) {
-    errorContainer.innerHTML = `<p>${message}</p>`;
+    errorContainer.appendChild(innerDiv);
+    innerDiv.innerHTML = "";
+    innerDiv.innerHTML = `<p style="margin: 0; padding: 0;">${message}</p>`;
+    errorContainer.classList.remove("d-none");
   }
 });

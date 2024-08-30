@@ -9,7 +9,7 @@ exports.createTransaction = async (req, res) => {
   try {
     const user = await User.findOne({ _id: user_id });
     if (!user) {
-      return res.status(404).json({ error: "User not found" });
+      return res.status(404).json({ error: "User Not Found!" });
     }
 
     const senderAccount = await Account.findById(account_id);

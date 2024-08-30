@@ -8,10 +8,26 @@ body {
   position: relative;
 }
 
+.table-height-400 {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
 .chart-btn {
   background-color: #7a60ff;
   color: #fff;
   text-decoration: none;
+}
+
+.create-btn {
+  background-color: #7a60ff;
+  color: #fff;
+}
+
+.create-btn:hover {
+  background-color: #fff;
+  color: #7a60ff;
+  outline: 1px solid #7a60ff;
 }
 
 .section-transfer-deposit-forms {

@@ -2,20 +2,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const loginForm = document.getElementById("login-form");
   const emailInput = document.getElementById("email-input");
   const passwordInput = document.getElementById("password-input");
-  const errorContainer = document.createElement("div");
 
-  // Append the error container to the form
-  loginForm.insertBefore(errorContainer, loginForm.firstChild);
-
-  // Style the error container
-  errorContainer.style.color = "red";
-  errorContainer.style.marginBottom = "1rem";
+  const errorContainer = document.getElementById("error-msg");
+  const innerDiv = document.createElement("div");
+  innerDiv.classList.add("d-flex", "flex-row", "align-items-center");
 
   loginForm.addEventListener("submit", async (event) => {
     event.preventDefault();
-
-    // Clear previous errors
-    errorContainer.innerHTML = "";
 
     const email = emailInput.value.trim();
     const password = passwordInput.value.trim();
@@ -45,7 +38,6 @@ document.addEventListener("DOMContentLoaded", () => {
       if (response.ok) {
         // Successful login - redirect to the dashboard
         window.location.href = "/dashboard";
-        // console.log(result);
       } else {
         // Display the error message returned by the server
         displayError(result.error);
@@ -62,6 +54,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function displayError(message) {
-    errorContainer.innerHTML = `<p>${message}</p>`;
+    errorContainer.appendChild(innerDiv);
+    innerDiv.innerHTML = "";
+    innerDiv.innerHTML = `<p style="margin: 0; padding: 0;">${message}</p>`;
+    errorContainer.classList.remove("d-none");
   }
 });

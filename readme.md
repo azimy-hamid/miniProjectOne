@@ -81,6 +81,7 @@ I have used these libraries and frameworks:
 
 - "bcrypt": "^5.1.1" -- used to encrypt user passwords
 - "body-parser": "^1.20.2" -- used to convert the incoming requests into json
+- "connect-mongo": "^5.1.0" -- used to store the session id in the database
 - "cookie-parser": "^1.4.6" -- used to store user id for showing the relavent data for each user (It's not secure to store user id into a cookie and should be changed )
 - "dotenv": "^16.4.5" -- used to store environment variables to make the website more secure.
 - "ejs": "^3.1.10" -- used to create dynamic content in the frontend

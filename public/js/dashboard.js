@@ -220,27 +220,22 @@ document.addEventListener("DOMContentLoaded", () => {
   );
   const transferSubmitBtn = document.getElementById("transfer-submit-btn");
 
-  //   ERROR CONTAINER TO DISPLAY THE ERROR MSG IF ANY OCCURS
-  const transferErrorContainer = document.createElement("div");
-
-  // Append the error container to the form
-  transferForm.insertBefore(transferErrorContainer, transferForm.firstChild);
-  // Style the error container
-  transferErrorContainer.style.color = "red";
-  transferErrorContainer.style.marginBottom = "1rem";
+  const transferErrorContainer = document.getElementById("transfer-error-msg");
+  const innerDiv = document.createElement("div");
+  innerDiv.classList.add("d-flex", "flex-row", "align-items-center");
 
   function displayError(message) {
-    transferErrorContainer.innerHTML = `<p>${message}</p>`;
+    transferErrorContainer.appendChild(innerDiv);
+    innerDiv.innerHTML = "";
+    innerDiv.innerHTML = `<p style="margin: 0; padding: 0;">${message}</p>`;
+    transferErrorContainer.classList.remove("d-none");
   }
 
   transferForm.addEventListener("submit", async (event) => {
     event.preventDefault();
 
-    // Clear previous errors
-    transferErrorContainer.innerHTML = "";
-
-    const userId = transferUserIdInput.value;
-    const accountId = transferAccountSelect.value;
+    const user_id = transferUserIdInput.value;
+    const account_id = transferAccountSelect.value;
     const reciever = transferRecieverSelect.value;
     const type = transferTypeInput.value;
     const amount = transferAmountInput.value;
@@ -248,8 +243,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Basic client-side validation
     if (
-      !userId ||
-      !accountId ||
+      !user_id ||
+      !account_id ||
       !reciever ||
       !type ||
       !amount ||
@@ -266,8 +261,8 @@ document.addEventListener("DOMContentLoaded", () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          userId,
-          accountId,
+          user_id,
+          account_id,
           reciever,
           type,
           amount,
@@ -304,30 +299,28 @@ document.addEventListener("DOMContentLoaded", () => {
   );
   const depositSubmitBtn = document.getElementById("deposit-submit-btn");
 
-  const depositErrorContainer = document.createElement("div");
-  depositForm.insertBefore(depositErrorContainer, depositForm.firstChild);
-
-  depositErrorContainer.style.color = "red";
-  depositErrorContainer.style.marginBottom = "1rem";
+  const depositErrorContainer = document.getElementById("deposit-error-msg");
+  const innerDiv = document.createElement("div");
+  innerDiv.classList.add("d-flex", "flex-row", "align-items-center");
 
   function displayError(message) {
-    depositErrorContainer.innerHTML = `<p>${message}</p>`;
+    depositErrorContainer.appendChild(innerDiv);
+    innerDiv.innerHTML = "";
+    innerDiv.innerHTML = `<p style="margin: 0; padding: 0;">${message}</p>`;
+    depositErrorContainer.classList.remove("d-none");
   }
 
   depositForm.addEventListener("submit", async (event) => {
     event.preventDefault();
 
-    // Clear previous errors
-    depositErrorContainer.innerHTML = "";
-
-    const userId = depositUserIdInput.value;
-    const accountId = depositAccountSelect.value;
+    const user_id = depositUserIdInput.value;
+    const account_id = depositAccountSelect.value;
     const type = depositTypeInput.value;
     const amount = depositAmountInput.value;
     const description = depositDescriptionInput.value;
 
     // Basic client-side validation
-    if (!userId || !accountId || !type || !amount || !description) {
+    if (!user_id || !account_id || !type || !amount || !description) {
       displayError("All fields must be filled");
       return;
     }
@@ -339,8 +332,8 @@ document.addEventListener("DOMContentLoaded", () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          userId,
-          accountId,
+          user_id,
+          account_id,
           type,
           amount,
           description,
